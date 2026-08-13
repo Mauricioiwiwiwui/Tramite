@@ -1,0 +1,10 @@
+{
+  "name": "Santana Management",
+  "short_name": "Santana",
+  "description": "Centro de trámites y herramientas de Santana Management",
+  "lang": "es-MX",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#06100e",
+  "theme_color": "#07110f"
+}

@@ -1,4 +1,4 @@
-const A='/assets/';
+const A='/';
 const wa='whatsapp://send';
 const links={
  rfc:'https://agsc.siat.sat.gob.mx/PTSC/ConsultaIdCSIAT/index.xhtml',
@@ -40,7 +40,7 @@ const tools=[
  ['calc','🧮','Calculadora','Básica'],['pct','📊','Calculadora %','Porcentajes'],['dates','📅','Calculadora de fechas','Fechas'],['combine','📑','Combinar PDF','Rescatada'],['split','✂️','Dividir PDF','PDF'],['compress','📦','Comprimir PDF','Optimizar'],['imagespdf','🖼️','Imágenes a PDF','PDF'],['pdfimages','🖼️','PDF a imágenes','PDF'],['rotate','🔄','Rotar PDF','PDF'],['comprobantes','🧾','Comprobantes','Rescatada'],['tickets','🎫','Tickets','Rescatada'],['gastos','💰','Gastos','Rescatada'],['deudor','⚖️','No Deudor Alimentario','Rescatada'],['password','🔐','Contraseñas','Seguridad'],['notes','📝','Notas rápidas','Temporal'],['clipboard','📋','Portapapeles temporal','Temporal'],['folio','🔢','Generador de folios','Rescatada']
 ];
 const apps=[['cfe','⚡','CFE Contigo','Abrir aplicación'],['imssapp','🏥','IMSS Digital','Abrir aplicación'],['whatsapp','💬','WhatsApp','Abrir WhatsApp']];
-const promos=[['Acta de Nacimiento','Trámite rápido y seguro','assets/acta_nacimiento.jpg','actas'],['Servicios IMSS','Constancias y gestiones','assets/IMSS.jpg','noderechoimss'],['Consulta RFC','Acceso al portal SAT','assets/Sat.jpg','rfc'],['CURP','Consulta y obtén tu CURP','assets/curp.jpg','curp']];
+const promos=[['Acta de Nacimiento','Trámite rápido y seguro','acta_nacimiento.jpg','actas'],['Servicios IMSS','Constancias y gestiones','IMSS.jpg','noderechoimss'],['Consulta RFC','Acceso al portal SAT','Sat.jpg','rfc'],['CURP','Consulta y obtén tu CURP','curp.jpg','curp']];
 let favorites=JSON.parse(localStorage.getItem('sm_favs')||'[]');let recent=JSON.parse(localStorage.getItem('sm_recent')||'[]');let stats=JSON.parse(localStorage.getItem('sm_stats')||'{"uses":0,"downloads":0,"external":0}');
 const el=id=>document.getElementById(id);function save(){localStorage.setItem('sm_favs',JSON.stringify(favorites));localStorage.setItem('sm_recent',JSON.stringify(recent));localStorage.setItem('sm_stats',JSON.stringify(stats))}
 function toast(t){el('toast').textContent=t;el('toast').style.display='block';setTimeout(()=>el('toast').style.display='none',2200)}

@@ -1,15 +1,175 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#07110f"><meta name="description" content="Centro de herramientas y trámites de Santana Management"><title>Santana Management</title><link rel="icon" href="acta_nacimiento.jpg"><link rel="stylesheet" href="styles.css"><link rel="manifest" href="manifest.webmanifest"></head><body>
-<div id="app">
-<aside class="sidebar"><div class="brand"><div class="brand-mark">S</div><div><strong>SANTANA</strong><span>MANAGEMENT</span></div></div><nav id="sideNav"></nav><div class="side-card"><small>Saldo disponible</small><b class="balance">+999</b><p>Centro de trámites y herramientas de Santana Management.</p></div><button id="themeBtn" class="ghost">☼ Cambiar tema</button></aside>
-<main class="main"><header class="top"><div><div class="mobile-brand">SANTANA <span>MANAGEMENT</span></div><h1>¡Hola, Mauricio! 👋</h1><p>¿Qué trámite necesitas hoy?</p></div><div class="top-actions"><button class="icon-btn" id="bellBtn">🔔</button><div class="profile">M <span>Mauricio<small>Cuenta personal</small></span></div></div></header>
-<section class="search"><span>⌕</span><input id="searchInput" placeholder="Buscar trámite, herramienta o aplicación..." autocomplete="off"><button id="clearSearch">×</button><div id="searchResults" class="search-results"></div></section>
-<section class="quick"><div class="section-head"><h2>Accesos rápidos</h2><button class="link-btn" data-action="favorites">Ver favoritos</button></div><div id="quickGrid" class="quick-grid"></div></section>
-<section class="featured"><div class="section-head"><h2>Servicios destacados</h2><div><button id="promoPrev" class="tiny">‹</button><button id="promoNext" class="tiny">›</button></div></div><div id="promoGrid" class="promo-grid"></div></section>
-<section class="layout-grid"><div class="content-col"><section id="tramites" class="panel"><div class="section-head"><h2>Trámites y consultas</h2><div><button class="link-btn" data-action="tramites">Ver todos</button> <a class="link-btn" href="catalogo.html">Catálogo completo</a></div></div><div id="serviceGrid" class="service-grid"></div></section><section id="herramientas" class="panel"><div class="section-head"><h2>Herramientas</h2><button class="link-btn" data-action="tools">Ver todas</button></div><div id="toolGrid" class="tool-grid"></div></section><section id="apps" class="panel"><div class="section-head"><h2>Aplicaciones</h2><button class="link-btn" data-action="apps">Ver todas</button></div><div id="appGrid" class="app-grid"></div></section></div>
-<aside class="right-col"><section class="panel music"><div class="section-head"><h2>🎵 Música</h2><button class="link-btn" data-action="music">Centro</button></div><div class="music-art">♪</div><b id="trackName">Selecciona una canción</b><small id="trackArtist">Archivos locales</small><audio id="audio" controls></audio><label class="upload-mini">＋ Agregar música<input id="musicFiles" type="file" accept="audio/*" multiple hidden></label></section><section class="panel"><div class="section-head"><h2>⭐ Favoritos</h2><button class="link-btn" data-action="favorites">Ver todos</button></div><div id="favoritesList" class="list"></div></section><section class="panel"><div class="section-head"><h2>🕘 Recientes</h2><button class="link-btn" data-action="recent">Ver todos</button></div><div id="recentList" class="list"></div></section></aside></section>
-<section class="panel stats"><div class="section-head"><h2>Panel / Actividad</h2><button class="link-btn" data-action="stats">Ver reporte</button></div><div id="statsGrid" class="stats-grid"></div></section>
-<footer>© Santana Management · <a href="javascript:void(0)" id="privacyBtn">Privacidad</a> · <a href="javascript:void(0)" id="aboutBtn">Acerca de</a></footer></main>
-<button id="aiFab" class="ai-fab" aria-label="Abrir Santana AI">🤖</button>
-<div id="aiPanel" class="ai-panel"><div class="ai-head"><div><b>🤖 Santana AI</b><small>Asistente del sistema</small></div><button id="aiClose">×</button></div><div id="aiMessages" class="ai-messages"><div class="ai-msg bot">¡Hola! Soy Santana AI. Puedo ayudarte a encontrar trámites y herramientas de esta página.</div></div><div class="ai-input"><input id="aiInput" placeholder="Escribe tu pregunta..."><button id="aiSend">➤</button></div></div>
-<div id="toast" class="toast"></div><div id="modal" class="modal"><div class="modal-card"><button id="modalClose">×</button><div id="modalBody"></div></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Consulta de Código Postal, CURP y UMF cercana">
+<title>Alta al NSS · CP + CURP + UMF</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#182230;background:#f3f6fa}
+*{box-sizing:border-box}body{margin:0}.app{max-width:780px;margin:auto;padding:18px}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 7px 24px #1720330b}
+h1{font-size:24px;margin:0 0 5px}.sub{color:#667085;margin-bottom:18px}
+label{display:block;font-weight:700;margin:14px 0 7px}
+input{width:100%;padding:14px 15px;border:1px solid #ccd4df;border-radius:12px;font-size:18px;outline:none}
+input:focus{border-color:#1769e0;box-shadow:0 0 0 3px #1769e015}
+.counter{font-size:12px;color:#667085;text-align:right;margin-top:5px}
+button{border:0;border-radius:12px;padding:13px 16px;font-weight:800;cursor:pointer}
+.main{width:100%;background:#1769e0;color:white;margin-top:16px;font-size:15px}.main:disabled{opacity:.6}
+.secondary{background:#edf3fb;color:#174477}
+.hidden{display:none}.loading{text-align:center;padding:28px}.loader{width:28px;height:28px;border:3px solid #dce5f1;border-top-color:#1769e0;border-radius:50%;margin:auto;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.ok{display:inline-block;background:#e8f7ee;color:#13733a;border-radius:20px;padding:6px 10px;font-size:12px;font-weight:800}
+.line{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid #edf0f4}.line:last-child{border-bottom:0}.value{text-align:right;font-weight:650}
+.umf{border:1px solid #dce4ee;border-radius:16px;padding:15px;margin-top:12px}
+.copyone{font-size:12px;padding:7px 9px;background:#f1f4f8;color:#31445d}
+.textbox{width:100%;min-height:225px;border:1px solid #d6dee8;border-radius:12px;padding:13px;font:14px ui-monospace,monospace;background:#fafbfd;resize:vertical}
+.error{background:#fff1f0;color:#b42318;padding:11px;border-radius:11px;margin-top:12px;font-size:14px}
+.notice{font-size:12px;color:#667085;margin-top:12px;line-height:1.45}
+.source{font-size:11px;color:#667085;margin-top:12px;line-height:1.45}
+.success{background:#eef8ff;color:#174477;padding:11px;border-radius:11px;margin-top:12px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="card">
+<h1>📋 Alta al NSS</h1>
+<div class="sub">Consulta el Código Postal y localiza una UMF cercana.</div>
+
+<label for="cp">Código Postal</label>
+<input id="cp" inputmode="numeric" maxlength="5" placeholder="Ej. 68259" autocomplete="postal-code">
+<div class="counter"><span id="cpc">0</span>/5 dígitos</div>
+
+<label for="curp">CURP</label>
+<input id="curp" maxlength="18" placeholder="Ingresa la CURP" autocomplete="off" autocapitalize="characters">
+<div class="counter"><span id="curpc">0</span>/18 caracteres</div>
+
+<button class="main" id="btn" onclick="consultar()">CONSULTAR UMF</button>
+<div id="error"></div>
+</div>
+
+<div id="loading" class="card hidden loading">
+<div class="loader"></div>
+<p><b>Consultando información…</b></p>
+<div class="sub" style="margin:7px 0 0">Buscando ubicación y UMF cercana</div>
+</div>
+
+<div id="resultado" class="hidden">
+<div class="card">
+<span class="ok">✓ UBICACIÓN ENCONTRADA</span>
+<h2>Datos del domicilio</h2>
+<div id="ubicacion"></div>
+</div>
+
+<div class="card">
+<span class="ok">🏥 UMF CERCANA</span>
+<div id="umf"></div>
+</div>
+
+<div class="card">
+<h2>📄 Texto listo para copiar</h2>
+<textarea id="texto" class="textbox" readonly></textarea>
+<button class="main" onclick="copiarTodo()">COPIAR TODO EL TEXTO</button>
+<div class="notice">La CURP se valida únicamente en tu navegador. No se manda a las APIs de ubicación ni se guarda en este sitio.</div>
+<div class="source">La búsqueda postal usa Zippopotam.us. La ubicación de unidades usa OpenStreetMap/Overpass. La UMF encontrada es una referencia de cercanía; para confirmar la unidad oficialmente asignada, verifica con IMSS.</div>
+</div>
+</div>
+</div>
+
+<script>
+const cpEl=document.getElementById('cp'),curpEl=document.getElementById('curp');
+cpEl.addEventListener('input',()=>{cpEl.value=cpEl.value.replace(/\D/g,'').slice(0,5);document.getElementById('cpc').textContent=cpEl.value.length});
+curpEl.addEventListener('input',()=>{curpEl.value=curpEl.value.toUpperCase().replace(/\s/g,'').slice(0,18);document.getElementById('curpc').textContent=curpEl.value.length});
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function row(k,v){const s=String(v??'');return `<div class="line"><span>${esc(k)}</span><span class="value">${esc(s||'—')} ${s?`<button class="copyone" onclick="copiar(${JSON.stringify(s)})">Copiar</button>`:''}</span></div>`}
+function km(lat1,lon1,lat2,lon2){const R=6371,p=Math.PI/180,a=Math.sin((lat2-lat1)*p/2)**2+Math.cos(lat1*p)*Math.cos(lat2*p)*Math.sin((lon2-lon1)*p/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+async function json(url,opts={}){const r=await fetch(url,opts);if(!r.ok)throw new Error('Servicio externo no disponible.');return r.json()}
+async function consultar(){
+ const cp=cpEl.value.trim(),curp=curpEl.value.trim(),err=document.getElementById('error');
+ err.innerHTML='';document.getElementById('resultado').classList.add('hidden');
+ if(!/^\d{5}$/.test(cp)){err.innerHTML='<div class="error">El Código Postal debe contener exactamente 5 dígitos.</div>';return}
+ if(!/^[A-Z0-9]{18}$/.test(curp)){err.innerHTML='<div class="error">La CURP debe contener exactamente 18 caracteres.</div>';return}
+ const btn=document.getElementById('btn');btn.disabled=true;document.getElementById('loading').classList.remove('hidden');
+ try{
+  const z=await json('https://api.zippopotam.us/mx/'+cp);
+  if(!z.places?.length)throw new Error('No se encontró ese Código Postal.');
+  const places=z.places;
+  const p=places[0],lat=Number(p.latitude),lon=Number(p.longitude);
+  let municipality=p['place name']||'',colonia='';
+  try{
+    const rev=await json(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2&addressdetails=1&zoom=18`,{headers:{'Accept-Language':'es'}});
+    const a=rev.address||{};municipality=a.municipality||a.town||a.city||a.county||municipality;colonia=a.suburb||a.neighbourhood||a.quarter||'';
+  }catch(_){}
+  document.getElementById('ubicacion').innerHTML=
+    row('Código Postal',cp)+row('Estado',p.state)+row('Municipio',municipality)+row('Localidad',p['place name'])+row('Colonia',colonia);
+  const q=`[out:json][timeout:25];(
+    nwr(around:30000,${lat},${lon})["name"~"UMF|UNIDAD DE MEDICINA FAMILIAR|IMSS","i"];
+    nwr(around:30000,${lat},${lon})["operator"~"IMSS|INSTITUTO MEXICANO DEL SEGURO SOCIAL","i"];
+    nwr(around:30000,${lat},${lon})["healthcare"="clinic"]["operator"~"IMSS","i"];
+  );out center tags;`;
+  const ov=await json('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(q));
+  let best=null,bestD=Infinity;
+  for(const e of (ov.elements||[])){
+    const t=e.tags||{},name=t.name||'';
+    const hay=(name+' '+(t.operator||'')+' '+(t.healthcare||'')).toLowerCase();
+    if(!/umf|unidad de medicina familiar|imss/.test(hay))continue;
+    const elat=Number(e.lat??e.center?.lat),elon=Number(e.lon??e.center?.lon);
+    if(!elat||!elon)continue;const d=km(lat,lon,elat,elon);
+    if(d<bestD){bestD=d;best=e}
+  }
+  let u=null;
+  if(best){
+    const t=best.tags||{};let a={};
+    try{
+      const rev=await json(`https://nominatim.openstreetmap.org/reverse?lat=${Number(best.lat??best.center?.lat)}&lon=${Number(best.lon??best.center?.lon)}&format=jsonv2&addressdetails=1&zoom=18`,{headers:{'Accept-Language':'es'}});
+      a=rev.address||{};
+    }catch(_){}
+    u={
+      name:t.name||'UMF IMSS',
+      street:t['addr:street']||a.road||'',
+      number:t['addr:housenumber']||a.house_number||'',
+      interior:t['addr:unit']||'',
+      colonia:t['addr:suburb']||t['addr:neighbourhood']||a.suburb||a.neighbourhood||'',
+      municipality:t['addr:city']||t['addr:municipality']||a.municipality||a.town||a.city||a.county||'',
+      state:t['addr:state']||a.state||p.state||'',
+      postcode:t['addr:postcode']||a.postcode||'',
+      phone:t.phone||t['contact:phone']||'',
+      distance:bestD.toFixed(1)
+    };
+  }
+  if(u){
+    document.getElementById('umf').innerHTML='<div class="umf">'+
+      '<h3 style="margin:8px 0 2px">'+esc(u.name)+'</h3><div class="sub">Unidad de Medicina Familiar</div>'+
+      row('Calle',u.street)+row('Número exterior',u.number)+row('Número interior',u.interior||'—')+
+      row('Colonia',u.colonia)+row('Municipio',u.municipality)+row('Estado',u.state)+row('Código Postal',u.postcode)+
+      row('Teléfono',u.phone)+`<div class="source">Distancia aproximada desde el centroide del CP: ${esc(u.distance)} km.</div></div>`;
+  }else{
+    document.getElementById('umf').innerHTML='<div class="error">No encontramos una UMF en OpenStreetMap dentro del radio de búsqueda. Puedes consultar el directorio oficial del IMSS para verificarla.</div>';
+  }
+  const text=`📋 Alta al NSS
+CURP: ${curp}
+Estado: ${p.state||''}
+Municipio: ${municipality}
+Localidad: ${p['place name']||''}
+Colonia: ${colonia||'No disponible'}
+Código Postal: ${cp}
+
+🏥 UMF cercana
+UMF: ${u?.name||'No encontrada'}
+Calle: ${u?.street||''}
+Número exterior: ${u?.number||''}
+Número interior: ${u?.interior||'—'}
+Colonia: ${u?.colonia||''}
+Municipio: ${u?.municipality||''}
+Estado: ${u?.state||''}
+Código Postal: ${u?.postcode||''}
+Teléfono: ${u?.phone||''}`;
+  document.getElementById('texto').value=text;
+  document.getElementById('resultado').classList.remove('hidden');document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
+ }catch(e){err.innerHTML='<div class="error">'+esc(e.message||'No se pudo completar la consulta.')+'</div>'}
+ finally{document.getElementById('loading').classList.add('hidden');btn.disabled=false}
+}
+function copiar(txt){navigator.clipboard?.writeText(txt).then(()=>alert('Dato copiado')).catch(()=>alert('No fue posible copiar automáticamente.'))}
+function copiarTodo(){copiar(document.getElementById('texto').value)}
+</script>
+</body>
+</html>

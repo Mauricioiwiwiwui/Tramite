@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Santana Hub</title>
+<meta name="theme-color" content="#0b1017">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#070b10;color:#f4f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:18px 20px;border-bottom:1px solid #26313d;background:#0c1219;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
+.logo{font-size:22px;font-weight:900}.logo i{color:#20dc82;font-style:normal}.clock{color:#9ba9b8;font-size:13px}
+main{max-width:1100px;margin:auto;padding:22px}.hero{padding:25px 5px 20px}.hero h1{font-size:clamp(30px,6vw,52px);margin:0 0 8px}.hero p{color:#9ba9b8;margin:0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#111923;border:1px solid #26313d;border-radius:18px;padding:17px;min-height:145px;box-shadow:0 12px 35px #0005}
+.card h3{margin:0 0 8px}.card p{color:#9ba9b8;font-size:13px;line-height:1.45}.btn{display:inline-block;margin-top:9px;padding:10px 12px;border-radius:10px;background:#20dc82;color:#06120b;font-weight:800;text-decoration:none;cursor:pointer;border:0}
+.panel{margin-top:16px}.tool{display:none}.tool.active{display:block}.wide{grid-column:span 2}textarea,input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a3745;background:#0a1017;color:#fff;margin:6px 0;font:inherit}.result{white-space:pre-wrap;background:#0a1017;border:1px solid #26313d;padding:14px;border-radius:12px;margin-top:10px;min-height:80px}.drop{border:2px dashed #344354;border-radius:14px;padding:28px;text-align:center;color:#aab7c4}.file{padding:9px 0;border-bottom:1px solid #26313d;display:flex;justify-content:space-between;gap:10px}.danger{background:#ff5b69;color:white}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:12px}.tabs button{white-space:nowrap;background:#18222d;color:#dce5ee;border:0;border-radius:9px;padding:10px 12px}.tabs button.active{background:#20dc82;color:#06120b}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.wide{grid-column:span 2}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:span 1}}
+</style>
+</head>
+<body>
+<header><div class="logo">Santana <i>Hub</i></div><div class="clock" id="clock"></div></header>
+<main>
+<section class="hero"><h1>Tu centro digital.</h1><p>Herramientas rápidas que funcionan directamente al abrir la página. Sin instalaciones.</p></section>
+
+<div class="grid">
+<div class="card"><h3>📋 Portapapeles</h3><p>Guarda textos temporalmente en este dispositivo.</p><button class="btn" onclick="openTool('clip')">Abrir</button></div>
+<div class="card"><h3>🔢 Generador</h3><p>Genera contraseñas, códigos y números aleatorios.</p><button class="btn" onclick="openTool('gen')">Abrir</button></div>
+<div class="card"><h3>📝 Notas</h3><p>Notas rápidas que se conservan aunque cierres la página.</p><button class="btn" onclick="openTool('notes')">Abrir</button></div>
+<div class="card"><h3>📁 Archivos</h3><p>Selecciona archivos y crea una lista local para revisarlos.</p><button class="btn" onclick="openTool('files')">Abrir</button></div>
+<div class="card"><h3>🧮 Calculadora</h3><p>Operaciones rápidas sin salir de tu página.</p><button class="btn" onclick="openTool('calc')">Abrir</button></div>
+<div class="card"><h3>🔐 Texto privado</h3><p>Oculta texto en pantalla mientras trabajas.</p><button class="btn" onclick="openTool('private')">Abrir</button></div>
+<div class="card"><h3>📱 Compartir</h3><p>Comparte texto mediante las funciones del teléfono.</p><button class="btn" onclick="share()">Compartir</button></div>
+<div class="card"><h3>✨ Santana</h3><p>Una base ligera para seguir agregando módulos después.</p><button class="btn" onclick="alert('Santana Hub listo 🚀')">Probar</button></div>
+</div>
+
+<section class="panel card">
+<div class="tabs">
+<button id="bclip" onclick="openTool('clip')">📋 Portapapeles</button>
+<button id="bgen" onclick="openTool('gen')">🔢 Generador</button>
+<button id="bnotes" onclick="openTool('notes')">📝 Notas</button>
+<button id="bfiles" onclick="openTool('files')">📁 Archivos</button>
+<button id="bcalc" onclick="openTool('calc')">🧮 Calculadora</button>
+<button id="bprivate" onclick="openTool('private')">🔐 Privado</button>
+</div>
+
+<div id="clip" class="tool">
+<h2>📋 Portapapeles</h2><textarea id="clipText" rows="7" placeholder="Pega aquí cualquier texto..."></textarea><button class="btn" onclick="copyText('clipText')">Copiar</button>
+</div>
+
+<div id="gen" class="tool">
+<h2>🔢 Generador</h2><input id="len" type="number" value="16" min="4" max="100"><button class="btn" onclick="generate()">Generar</button><div id="genResult" class="result"></div><button class="btn" onclick="copyResult()">Copiar</button>
+</div>
+
+<div id="notes" class="tool">
+<h2>📝 Notas</h2><textarea id="notesText" rows="12" placeholder="Tus notas..."></textarea><button class="btn" onclick="saveNotes()">Guardar</button><button class="btn danger" onclick="clearNotes()">Borrar</button><span id="saved" style="margin-left:10px;color:#20dc82"></span>
+</div>
+
+<div id="files" class="tool">
+<h2>📁 Archivos</h2><div class="drop"><input id="fileInput" type="file" multiple></div><div id="fileList"></div><p class="muted">Esta herramienta trabaja localmente en tu navegador; no sube archivos a Internet.</p>
+</div>
+
+<div id="calc" class="tool">
+<h2>🧮 Calculadora</h2><input id="expr" placeholder="Ejemplo: 125*7+50/2"><button class="btn" onclick="calculate()">Calcular</button><div id="calcResult" class="result"></div>
+</div>
+
+<div id="private" class="tool">
+<h2>🔐 Texto privado</h2><input id="pin" type="password" placeholder="PIN"><textarea id="privateText" rows="8" placeholder="Escribe algo..."></textarea><button class="btn" onclick="togglePrivate()">Ocultar/mostrar</button>
+</div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function openTool(id){document.querySelectorAll('.tool').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));let b=$('b'+id);if(b)b.classList.add('active');scrollTo({top:document.querySelector('.panel').offsetTop-70,behavior:'smooth'})}
+function copyText(id){navigator.clipboard?.writeText($(id).value);alert('Copiado ✅')}
+function generate(){let n=Math.min(100,Math.max(4,+$('len').value||16)),c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%_-';let a=new Uint32Array(n);crypto.getRandomValues(a);$('genResult').textContent=Array.from(a,x=>c[x%c.length]).join('')}
+function copyResult(){navigator.clipboard?.writeText($('genResult').textContent);alert('Copiado ✅')}
+$('notesText').value=localStorage.santanaNotes||'';function saveNotes(){localStorage.santanaNotes=$('notesText').value;$('saved').textContent='Guardado ✓';setTimeout(()=>saved.textContent='',1500)}function clearNotes(){if(confirm('¿Borrar notas?')){$('notesText').value='';localStorage.removeItem('santanaNotes')}}
+$('fileInput').onchange=()=>{$('fileList').innerHTML='';[...$('fileInput').files].forEach(f=>{let d=document.createElement('div');d.className='file';d.innerHTML=`<span>📎 ${f.name}<small>${(f.size/1024).toFixed(1)} KB</small></span><span>${f.type||'archivo'}</span>`;$('fileList').appendChild(d)})}
+function calculate(){let e=$('expr').value.trim();if(!/^[0-9+\-*/().%\s]+$/.test(e))return $('calcResult').textContent='Solo se permiten números y operaciones básicas.';try{$('calcResult').textContent=String(Function('return '+e)())}catch{$('calcResult').textContent='Expresión no válida.'}}
+function togglePrivate(){let x=$('privateText');x.style.webkitTextSecurity=x.style.webkitTextSecurity==='disc'?'none':'disc'}
+async function share(){if(navigator.share)await navigator.share({title:'Santana Hub',text:'Entra a Santana Hub',url:location.href});else{await navigator.clipboard.writeText(location.href);alert('Enlace copiado ✅')}}
+function tick(){$('clock').textContent=new Date().toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}tick();setInterval(tick,1000)
+openTool('clip');
+</script>
+</body></html>

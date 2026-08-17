@@ -1,85 +1,12 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Santana Hub</title>
-<meta name="theme-color" content="#0b1017">
-<style>
-*{box-sizing:border-box}body{margin:0;background:#070b10;color:#f4f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-header{padding:18px 20px;border-bottom:1px solid #26313d;background:#0c1219;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
-.logo{font-size:22px;font-weight:900}.logo i{color:#20dc82;font-style:normal}.clock{color:#9ba9b8;font-size:13px}
-main{max-width:1100px;margin:auto;padding:22px}.hero{padding:25px 5px 20px}.hero h1{font-size:clamp(30px,6vw,52px);margin:0 0 8px}.hero p{color:#9ba9b8;margin:0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#111923;border:1px solid #26313d;border-radius:18px;padding:17px;min-height:145px;box-shadow:0 12px 35px #0005}
-.card h3{margin:0 0 8px}.card p{color:#9ba9b8;font-size:13px;line-height:1.45}.btn{display:inline-block;margin-top:9px;padding:10px 12px;border-radius:10px;background:#20dc82;color:#06120b;font-weight:800;text-decoration:none;cursor:pointer;border:0}
-.panel{margin-top:16px}.tool{display:none}.tool.active{display:block}.wide{grid-column:span 2}textarea,input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a3745;background:#0a1017;color:#fff;margin:6px 0;font:inherit}.result{white-space:pre-wrap;background:#0a1017;border:1px solid #26313d;padding:14px;border-radius:12px;margin-top:10px;min-height:80px}.drop{border:2px dashed #344354;border-radius:14px;padding:28px;text-align:center;color:#aab7c4}.file{padding:9px 0;border-bottom:1px solid #26313d;display:flex;justify-content:space-between;gap:10px}.danger{background:#ff5b69;color:white}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:12px}.tabs button{white-space:nowrap;background:#18222d;color:#dce5ee;border:0;border-radius:9px;padding:10px 12px}.tabs button.active{background:#20dc82;color:#06120b}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.wide{grid-column:span 2}}
-@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:span 1}}
-</style>
-</head>
-<body>
-<header><div class="logo">Santana <i>Hub</i></div><div class="clock" id="clock"></div></header>
-<main>
-<section class="hero"><h1>Tu centro digital.</h1><p>Herramientas rápidas que funcionan directamente al abrir la página. Sin instalaciones.</p></section>
-
-<div class="grid">
-<div class="card"><h3>📋 Portapapeles</h3><p>Guarda textos temporalmente en este dispositivo.</p><button class="btn" onclick="openTool('clip')">Abrir</button></div>
-<div class="card"><h3>🔢 Generador</h3><p>Genera contraseñas, códigos y números aleatorios.</p><button class="btn" onclick="openTool('gen')">Abrir</button></div>
-<div class="card"><h3>📝 Notas</h3><p>Notas rápidas que se conservan aunque cierres la página.</p><button class="btn" onclick="openTool('notes')">Abrir</button></div>
-<div class="card"><h3>📁 Archivos</h3><p>Selecciona archivos y crea una lista local para revisarlos.</p><button class="btn" onclick="openTool('files')">Abrir</button></div>
-<div class="card"><h3>🧮 Calculadora</h3><p>Operaciones rápidas sin salir de tu página.</p><button class="btn" onclick="openTool('calc')">Abrir</button></div>
-<div class="card"><h3>🔐 Texto privado</h3><p>Oculta texto en pantalla mientras trabajas.</p><button class="btn" onclick="openTool('private')">Abrir</button></div>
-<div class="card"><h3>📱 Compartir</h3><p>Comparte texto mediante las funciones del teléfono.</p><button class="btn" onclick="share()">Compartir</button></div>
-<div class="card"><h3>✨ Santana</h3><p>Una base ligera para seguir agregando módulos después.</p><button class="btn" onclick="alert('Santana Hub listo 🚀')">Probar</button></div>
-</div>
-
-<section class="panel card">
-<div class="tabs">
-<button id="bclip" onclick="openTool('clip')">📋 Portapapeles</button>
-<button id="bgen" onclick="openTool('gen')">🔢 Generador</button>
-<button id="bnotes" onclick="openTool('notes')">📝 Notas</button>
-<button id="bfiles" onclick="openTool('files')">📁 Archivos</button>
-<button id="bcalc" onclick="openTool('calc')">🧮 Calculadora</button>
-<button id="bprivate" onclick="openTool('private')">🔐 Privado</button>
-</div>
-
-<div id="clip" class="tool">
-<h2>📋 Portapapeles</h2><textarea id="clipText" rows="7" placeholder="Pega aquí cualquier texto..."></textarea><button class="btn" onclick="copyText('clipText')">Copiar</button>
-</div>
-
-<div id="gen" class="tool">
-<h2>🔢 Generador</h2><input id="len" type="number" value="16" min="4" max="100"><button class="btn" onclick="generate()">Generar</button><div id="genResult" class="result"></div><button class="btn" onclick="copyResult()">Copiar</button>
-</div>
-
-<div id="notes" class="tool">
-<h2>📝 Notas</h2><textarea id="notesText" rows="12" placeholder="Tus notas..."></textarea><button class="btn" onclick="saveNotes()">Guardar</button><button class="btn danger" onclick="clearNotes()">Borrar</button><span id="saved" style="margin-left:10px;color:#20dc82"></span>
-</div>
-
-<div id="files" class="tool">
-<h2>📁 Archivos</h2><div class="drop"><input id="fileInput" type="file" multiple></div><div id="fileList"></div><p class="muted">Esta herramienta trabaja localmente en tu navegador; no sube archivos a Internet.</p>
-</div>
-
-<div id="calc" class="tool">
-<h2>🧮 Calculadora</h2><input id="expr" placeholder="Ejemplo: 125*7+50/2"><button class="btn" onclick="calculate()">Calcular</button><div id="calcResult" class="result"></div>
-</div>
-
-<div id="private" class="tool">
-<h2>🔐 Texto privado</h2><input id="pin" type="password" placeholder="PIN"><textarea id="privateText" rows="8" placeholder="Escribe algo..."></textarea><button class="btn" onclick="togglePrivate()">Ocultar/mostrar</button>
-</div>
-</section>
-</main>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NOVA Mayoreo - Notas</title><style>
+:root{--ink:#17202a;--muted:#667085;--line:#e4e7ec;--soft:#f7f8fa;--accent:#1f4d45;--gold:#b98b45}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef1f4;color:var(--ink)}button,input,select{font:inherit}.app{max-width:1100px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.brand{display:flex;gap:10px;align-items:center}.mark{width:42px;height:42px;border-radius:12px;background:var(--accent);color:white;display:grid;place-items:center;font-weight:800}.brand b{font-size:20px}.brand small{display:block;color:var(--muted)}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 6px 20px #0000000d;margin-bottom:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px}.cats{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chip{border:1px solid var(--line);background:white;padding:8px 12px;border-radius:999px;cursor:pointer}.chip.active{background:var(--accent);color:white}.product{display:grid;grid-template-columns:32px 1fr 90px 110px 110px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.product input[type=number]{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px}.money{text-align:right;font-weight:700}.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.btn{border:0;border-radius:11px;padding:11px 16px;cursor:pointer;font-weight:700}.primary{background:var(--accent);color:white}.secondary{background:#eef4f2;color:var(--accent)}.summary{margin-left:auto;max-width:360px}.row{display:flex;justify-content:space-between;padding:5px 0}.total{font-size:22px;font-weight:800;border-top:2px solid var(--ink);margin-top:6px;padding-top:10px}.note{display:none;background:white;width:210mm;min-height:297mm;margin:auto;padding:16mm 15mm;color:#182028}.invoice-head{display:flex;justify-content:space-between;border-bottom:2px solid var(--accent);padding-bottom:14px}.logoLine{display:flex;gap:12px;align-items:center}.logoBig{width:54px;height:54px;border-radius:14px;background:var(--accent);color:white;display:grid;place-items:center;font-size:24px;font-weight:900}.invoice-head h1{margin:0;font-size:23px;letter-spacing:.5px}.invoice-head p{margin:4px 0 0;color:#667085}.doc{text-align:right}.doc strong{font-size:18px}.clientbox{margin:20px 0;padding:14px 16px;background:#f5f7f7;border-left:4px solid var(--gold);display:grid;grid-template-columns:1fr 1fr;gap:10px}.clientbox span{font-size:11px;color:#667085;display:block;text-transform:uppercase;letter-spacing:.6px}.invoice-table{width:100%;border-collapse:collapse;margin-top:12px}.invoice-table th{background:var(--accent);color:white;text-align:left;padding:10px;font-size:12px}.invoice-table td{padding:10px;border-bottom:1px solid #e5e7eb}.invoice-table th:nth-child(1),.invoice-table td:nth-child(1){text-align:center;width:60px}.invoice-table th:nth-child(3),.invoice-table th:nth-child(4),.invoice-table td:nth-child(3),.invoice-table td:nth-child(4){text-align:right}.invoice-total{width:310px;margin:18px 0 0 auto}.invoice-total .grand{background:#f2f6f5;padding:10px;margin-top:6px;font-size:20px;font-weight:900}.foot{margin-top:36px;border-top:1px solid #d8dee3;padding-top:14px;display:flex;justify-content:space-between;color:#667085;font-size:12px}.thanks{font-weight:800;color:var(--accent)}.empty{padding:24px;text-align:center;color:var(--muted)}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.product{grid-template-columns:30px 1fr 70px 85px}.product .money{display:none}.app{padding:10px}.top{align-items:flex-start}.brand small{font-size:11px}}@media print{body{background:white}.app{display:none!important}.note{display:block!important;box-shadow:none;margin:0;width:auto;min-height:auto;padding:10mm} @page{size:A4;margin:0}}
+</style></head><body><main class="app"><div class="top"><div class="brand"><div class="mark">N</div><div><b>NOVA MAYOREO</b><small>Limpieza · Hogar · Oficina · Desechables</small></div></div><button class="btn secondary" onclick="resetSale()">+ Nueva nota</button></div>
+<section class="card"><h2 style="margin-top:0">Datos de la nota</h2><div class="grid"><div class="field"><label>CLIENTE</label><input id="client" placeholder="Ej. Abarrotes La Esperanza"></div><div class="field"><label>TELÉFONO DEL CLIENTE</label><input id="clientPhone" placeholder="Opcional"></div><div class="field"><label>FOLIO</label><input id="folio" value="000185"></div><div class="field"><label>FORMA DE PAGO</label><select id="payment"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Crédito</option></select></div></div></section>
+<section class="card"><h2 style="margin:0">Selecciona lo que compró</h2><p style="color:var(--muted);margin:6px 0">Marca el producto, cambia cantidad o precio si lo necesitas.</p><div class="cats" id="cats"></div><div id="products"></div></section>
+<section class="card"><div class="grid"><div class="field"><label>DESCUENTO $</label><input id="discount" type="number" min="0" step="0.01" value="0" oninput="renderSummary()"></div><div class="field"><label>TELÉFONO DEL NEGOCIO</label><input id="bizPhone" placeholder="Escribe tu número"></div></div><div class="summary" id="summary"></div><div class="actions"><button class="btn secondary" onclick="preview()">Vista previa</button><button class="btn primary" onclick="makePDF()">Generar PDF / Imprimir</button></div></section></main>
+<section class="note" id="note"><div class="invoice-head"><div class="logoLine"><div class="logoBig">N</div><div><h1>NOVA MAYOREO</h1><p>Distribuidora mayorista</p><p style="font-size:11px">Limpieza · Hogar · Oficina · Desechables</p></div></div><div class="doc"><strong>NOTA DE REMISIÓN</strong><p>Folio <b id="pFolio"></b></p><p id="pDate"></p></div></div><div class="clientbox"><div><span>Cliente</span><b id="pClient"></b></div><div><span>Teléfono</span><b id="pClientPhone"></b></div><div><span>Forma de pago</span><b id="pPayment"></b></div><div><span>Tel. distribuidora</span><b id="pBizPhone"></b></div></div><table class="invoice-table"><thead><tr><th>Cant.</th><th>Descripción</th><th>P. Unit.</th><th>Importe</th></tr></thead><tbody id="pRows"></tbody></table><div class="invoice-total" id="pTotals"></div><div class="foot"><div><div class="thanks">Gracias por su compra.</div><div>Documento comercial - Nota de remisión.</div></div><div style="text-align:right"><b>NOVA MAYOREO</b><div>Todo para tu negocio.</div></div></div></section>
 <script>
-const $=id=>document.getElementById(id);
-function openTool(id){document.querySelectorAll('.tool').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));let b=$('b'+id);if(b)b.classList.add('active');scrollTo({top:document.querySelector('.panel').offsetTop-70,behavior:'smooth'})}
-function copyText(id){navigator.clipboard?.writeText($(id).value);alert('Copiado ✅')}
-function generate(){let n=Math.min(100,Math.max(4,+$('len').value||16)),c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%_-';let a=new Uint32Array(n);crypto.getRandomValues(a);$('genResult').textContent=Array.from(a,x=>c[x%c.length]).join('')}
-function copyResult(){navigator.clipboard?.writeText($('genResult').textContent);alert('Copiado ✅')}
-$('notesText').value=localStorage.santanaNotes||'';function saveNotes(){localStorage.santanaNotes=$('notesText').value;$('saved').textContent='Guardado ✓';setTimeout(()=>saved.textContent='',1500)}function clearNotes(){if(confirm('¿Borrar notas?')){$('notesText').value='';localStorage.removeItem('santanaNotes')}}
-$('fileInput').onchange=()=>{$('fileList').innerHTML='';[...$('fileInput').files].forEach(f=>{let d=document.createElement('div');d.className='file';d.innerHTML=`<span>📎 ${f.name}<small>${(f.size/1024).toFixed(1)} KB</small></span><span>${f.type||'archivo'}</span>`;$('fileList').appendChild(d)})}
-function calculate(){let e=$('expr').value.trim();if(!/^[0-9+\-*/().%\s]+$/.test(e))return $('calcResult').textContent='Solo se permiten números y operaciones básicas.';try{$('calcResult').textContent=String(Function('return '+e)())}catch{$('calcResult').textContent='Expresión no válida.'}}
-function togglePrivate(){let x=$('privateText');x.style.webkitTextSecurity=x.style.webkitTextSecurity==='disc'?'none':'disc'}
-async function share(){if(navigator.share)await navigator.share({title:'Santana Hub',text:'Entra a Santana Hub',url:location.href});else{await navigator.clipboard.writeText(location.href);alert('Enlace copiado ✅')}}
-function tick(){$('clock').textContent=new Date().toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}tick();setInterval(tick,1000)
-openTool('clip');
-</script>
-</body></html>
+const catalog=[['Limpieza','Cloro 1 L',18],['Limpieza','Detergente líquido 1 L',29.5],['Limpieza','Suavizante 1 L',32],['Limpieza','Desinfectante 1 L',25],['Limpieza','Jabón para manos',22],['Limpieza','Limpiador multiusos 1 L',27],['Limpieza','Escoba reforzada',48],['Limpieza','Trapeador',52],['Desechables','Vasos 8 oz - paquete',38],['Desechables','Platos desechables - paquete',45],['Desechables','Servilletas - paquete',25],['Desechables','Bolsas para basura - rollo',35],['Higiene','Papel higiénico - paquete',42],['Higiene','Gel antibacterial 500 ml',34],['Papelería','Hojas carta - paquete',68],['Papelería','Pluma azul',7.5],['Papelería','Cuaderno profesional',42],['Papelería','Folder carta',4.5],['Hogar','Fibra para trastes',9],['Hogar','Esponja multiusos',8],['Empaque','Cinta canela',24],['Empaque','Bolsa camiseta - paquete',55]].map((x,i)=>({id:i,cat:x[0],name:x[1],price:x[2],qty:1,on:false}));let active='Todos';
+const mx=n=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(n||0);function init(){let cs=['Todos',...new Set(catalog.map(x=>x.cat))];cats.innerHTML=cs.map(c=>`<button class="chip ${c===active?'active':''}" onclick="active='${c}';init()">${c}</button>`).join('');renderProducts();renderSummary()}function renderProducts(){let a=catalog.filter(x=>active==='Todos'||x.cat===active);products.innerHTML=a.map(x=>`<div class="product"><input type="checkbox" ${x.on?'checked':''} onchange="catalog[${x.id}].on=this.checked;renderSummary()"><div><b>${x.name}</b><small style="display:block;color:#667085">${x.cat}</small></div><input type="number" min="1" value="${x.qty}" onchange="catalog[${x.id}].qty=+this.value;renderSummary()"><input type="number" min="0" step="0.01" value="${x.price}" onchange="catalog[${x.id}].price=+this.value;renderSummary()"><div class="money">${mx(x.qty*x.price)}</div></div>`).join('')||'<div class="empty">Sin productos</div>'}function totals(){let s=catalog.filter(x=>x.on).reduce((a,x)=>a+x.qty*x.price,0),d=+discount.value||0;return [s,d,Math.max(0,s-d)]}function renderSummary(){let [s,d,t]=totals();summary.innerHTML=`<div class="row"><span>Subtotal</span><b>${mx(s)}</b></div><div class="row"><span>Descuento</span><b>-${mx(d)}</b></div><div class="row total"><span>Total</span><span>${mx(t)}</span></div>`;renderProducts()}function fillNote(){let sel=catalog.filter(x=>x.on);if(!sel.length){alert('Selecciona al menos un producto.');return false}pFolio.textContent=folio.value||'S/F';pDate.textContent=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});pClient.textContent=client.value||'Público general';pClientPhone.textContent=clientPhone.value||'—';pPayment.textContent=payment.value;pBizPhone.textContent=bizPhone.value||'—';pRows.innerHTML=sel.map(x=>`<tr><td>${x.qty}</td><td>${x.name}</td><td>${mx(x.price)}</td><td>${mx(x.qty*x.price)}</td></tr>`).join('');let [s,d,t]=totals();pTotals.innerHTML=`<div class="row"><span>Subtotal</span><b>${mx(s)}</b></div>${d?`<div class="row"><span>Descuento</span><b>-${mx(d)}</b></div>`:''}<div class="row grand"><span>TOTAL</span><span>${mx(t)}</span></div>`;return true}function preview(){if(!fillNote())return;let w=window.open('','_blank');w.document.write('<!doctype html><title>Vista previa</title>'+document.querySelector('style').outerHTML+'<body>'+note.outerHTML+'<script>document.getElementById("note").style.display="block"<\/script></body>');w.document.close()}function makePDF(){if(!fillNote())return;window.print()}function resetSale(){catalog.forEach(x=>{x.on=false;x.qty=1});client.value='';clientPhone.value='';discount.value=0;folio.value=String((+folio.value||0)+1).padStart(6,'0');renderSummary()}init();
+</script></body></html>
